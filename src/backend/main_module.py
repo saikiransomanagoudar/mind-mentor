@@ -16,6 +16,8 @@ def run_script():
         script = 'voice_qna.py'
     elif button_clicked == 'quiz':
         script = 'quiz.py'
+    elif button_clicked == 'video_tutor':
+        script = 'video_tutor.py'
     else:
         return jsonify({'error': 'Invalid button'}), 400
 
