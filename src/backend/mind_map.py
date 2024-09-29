@@ -2,11 +2,13 @@ import os
 import json
 import boto3
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Import CORS
 from werkzeug.utils import secure_filename
 import PyPDF2
 import docx
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all domains on all routes
 
 # Configure the Bedrock client
 bedrock_runtime = boto3.client(

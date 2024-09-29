@@ -1,9 +1,11 @@
 import os
 import json
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # Import CORS here
 import boto3
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for the app, allowing all domains on all routes
 
 # Configure the Bedrock client
 bedrock_runtime = boto3.client(
