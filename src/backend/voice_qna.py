@@ -37,8 +37,34 @@ def transcribe_audio(audio_file):
         return "Sorry, there was an error with the speech recognition service."
 
 def query_bedrock(question, context=""):
+    # Ensure that the triple-quoted string is properly closed
     prompt = f"""Human: Given the following context (if any), please answer the question. If there's no context, treat it as a general conversation.
 
 Context: {context}
 
 Question: {question}
+
+Assistant:"""  # The triple-quoted string ends here.
+
+    body = {
+        "inputText": prompt,
+        "maxTokens": 500,
+        "temperature": 0.7,
+        "top_p": 1
+    }
+
+    try:
+        response = bedrock_runtime.invoke_model(
+            body=json.dumps(body),
+            modelId="amazon.titan-tg1-large",  # Ensure this model ID is available
+            accept="application/json",
+            contentType="application/json"
+        )
+
+        response_body = json.loads(response['body'].read())
+        return response_body.get('outputText', 'No response')
+    except ClientError as e:
+        return f"Error querying Bedrock: {e}"
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5050)
